@@ -117,13 +117,13 @@
   var bot = $.bot;
   var atth = $.atth;
   
-  function ou(a){
-    atth(esc(a), res);
+  function ou(){
+    atth(esc(apl(stf, arguments)), res);
     bot(pg);
   }
   
-  function out(a){
-    atth(esc(a) + "<br>", res);
+  function out(){
+    atth(esc(apl(stf, arguments)) + "<br>", res);
     bot(pg);
   }
   
@@ -138,6 +138,12 @@
   window.load = load;
   window.udf = udf;
   window.tfna = $.tfna;
+  
+  window.onerror = function (msg, url, line){
+    out("Error: " + msg + " at line " + line + " of " + url);
+    out("");
+    return false;
+  }
   
   aload("tests.js", runall);
   
