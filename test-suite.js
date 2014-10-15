@@ -132,12 +132,17 @@
                ["&lt", "&gt", "<br>"], a);
   }
   
+  function title(a){
+    document.title = a;
+  }
+  
   ////// Load Files //////
   
   window.test = test;
   window.load = load;
   window.udf = udf;
   window.tfna = $.tfna;
+  window.title = title;
   
   window.onerror = function (msg, url, line){
     out("Error: " + msg + " at line " + line + " of " + url);

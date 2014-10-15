@@ -1,4 +1,4 @@
-/***** Test Suite Testing *****/
+title("Test Suite Testing");
 
 //// Sanity ////
 
