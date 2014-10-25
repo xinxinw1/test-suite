@@ -3,13 +3,12 @@
 test-suite            master:index.html               .
 test-suite            master:test-suite.css           .
 test-suite            master:test-suite.js            .
-test-suite            master:libtest/tools.js         .
-test-suite            master:libtest/ajax.js          .
+test-suite            master:libtest/tools.js         libtest
+test-suite            master:libtest/ajax.js          libtest
 
 lisp-tools            newrep:tests.js                 .
 
 tools                 master:tools.js                 lib
 prec-math             master:prec-math.js             lib
 ajax                  master:ajax.js                  lib
-
 lisp-tools            newrep:lisp-tools.js            lib
