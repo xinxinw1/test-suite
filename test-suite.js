@@ -150,7 +150,7 @@
     return false;
   }
   
-  aload("tests.js", runall);
+  aload("../tests.js", runall);
   
   ////// Object Exposure //////
   
