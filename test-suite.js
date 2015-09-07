@@ -1,4 +1,4 @@
-/***** Test Suite Devel *****/
+/***** Test Suite 0.9 *****/
 
 /* require tools >= 3.0 */
 /* require ajax */
@@ -150,7 +150,7 @@
     return false;
   }
   
-  aload("tests.js", runall);
+  aload("../tests.js", runall);
   
   ////// Object Exposure //////
   
