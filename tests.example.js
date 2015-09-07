@@ -1,5 +1,3 @@
-// Put this file one
-
 title("Test Suite Testing");
 
 //// Sanity ////
