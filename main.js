@@ -1,13 +1,16 @@
-/***** Test Suite 0.9 *****/
+/***** Test Suite 1.0 *****/
 
-/* require tools >= 3.0 */
-/* require ajax */
+/* require tools 4.5.1 */
+/* require ajax 4.5.0 */
 
 (function (udf){
   var win = window;
   
   var $ = win.$;
   win.$ = udf;
+  
+  var file = Test.file;
+  win.Test = udf;
   
   var udfp = $.udfp;
   
@@ -21,8 +24,6 @@
   var tfn = $.tfn;
   var tfna = $.tfna;
   
-  var typ = $.typ2;
-  
   var apl = $.apl;
   var sli = $.sli;
   
@@ -34,6 +35,10 @@
   var load = $.load;
   
   ////// Types //////
+  
+  function typ(a){
+    return a.type;
+  }
   
   // cfn = comparison fn
   function tseq(run, res, cfn){
@@ -150,7 +155,7 @@
     return false;
   }
   
-  aload("../tests.js", runall);
+  aload(file, runall);
   
   ////// Object Exposure //////
   

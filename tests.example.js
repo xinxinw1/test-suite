@@ -1,7 +1,8 @@
-title("Test Suite Testing");
+title("Test Suite Testing 1.0");
 
 //// Sanity ////
 
+test('true', false); // should fail
 test('123', 123);
 test('false', false);
 test('true', true);
