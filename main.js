@@ -1,4 +1,4 @@
-/***** Test Suite 1.0 *****/
+/***** Test Suite 1.1 *****/
 
 /* require tools 4.5.1 */
 /* require ajax 4.5.0 */
@@ -31,8 +31,8 @@
   
   var evl = $.evl;
   
-  var aload = $.aload;
   var load = $.load;
+  var aload = $.aload;
   
   ////// Types //////
   
@@ -143,8 +143,24 @@
   
   ////// Load Files //////
   
+  var numtoload = 0;
+  function aload2(a, f){
+    numtoload++;
+    aload(a, function (){
+      f();
+      numtoload--;
+      checkrun();
+    });
+  }
+  
+  var runready = false;
+  function checkrun(){
+    if (runready && numtoload == 0)runall();
+  }
+  
   window.test = test;
   window.load = load;
+  window.aload = aload2;
   window.udf = udf;
   window.tfna = $.tfna;
   window.title = title;
@@ -155,7 +171,10 @@
     return false;
   }
   
-  aload(file, runall);
+  aload(file, function (){
+    runready = true;
+    checkrun();
+  });
   
   ////// Object Exposure //////
   

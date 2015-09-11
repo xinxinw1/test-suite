@@ -1,4 +1,4 @@
-title("Test Suite Testing 1.0");
+title("Test Suite Testing 1.1");
 
 //// Sanity ////
 
