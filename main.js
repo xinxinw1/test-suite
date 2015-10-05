@@ -1,4 +1,4 @@
-/***** Test Suite 1.1 *****/
+/***** Test Suite 1.2.0 *****/
 
 /* require tools 4.5.1 */
 /* require ajax 4.5.0 */
@@ -17,6 +17,7 @@
   var al = $.al;
   var dmp = $.dmp;
   
+  var map = $.map;
   var rpl = $.rpl;
   
   var psh = $.psh;
@@ -144,7 +145,9 @@
   ////// Load Files //////
   
   var numtoload = 0;
-  function aload2(a, f){
+  function aload2(a, v, f){
+    if (udfp(f))f = v;
+    else a = map(function (a){return a+"?v="+v;}, a);
     numtoload++;
     aload(a, function (){
       f();
