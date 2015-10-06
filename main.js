@@ -1,4 +1,4 @@
-/***** Test Suite 1.2.0 *****/
+/***** Test Suite 1.2.1 *****/
 
 /* require tools 4.5.1 */
 /* require ajax 4.5.0 */

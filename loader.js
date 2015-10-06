@@ -1,6 +1,6 @@
 /***** Test Suite Loader *****/
 
-var tsversion = "1.2.0";
+var tsversion = "1.2.1";
 
 window.onload = function (){
   document.body.innerHTML = "<div id=\"page\"><div id=\"results\"></div></div>";
