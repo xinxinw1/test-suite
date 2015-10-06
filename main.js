@@ -90,7 +90,9 @@
         out(gmess(res));
       }
     }
+    out("");
     if (allpass)out("Passed all tests!");
+    else out("Failed some tests!");
   }
   
   function run1(a){
