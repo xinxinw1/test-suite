@@ -1,6 +1,18 @@
 /***** Test Suite *****/
 
-* {margin: 0; padding: 0; border: 0 none; font: 13px "Courier New", "DejaVu Sans Mono", monospace;}
+* {margin: 0; padding: 0; border: 0 none; font-size: 13px; font-family: "Courier New", "DejaVu Sans Mono", monospace;}
 
-#page {position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow: auto;}
-#results {white-space: pre-wrap;}
+body {margin: 10px;}
+h1 {font-size: 21px; margin-bottom: 10px;}
+table {border-spacing: 0; border-collapse: collapse; margin-bottom: 10px;}
+td, th {vertical-align: top; text-align: left;}
+
+#page {width: 100%;}
+
+#results {width: 100%;}
+#results td, #results th {border: 1px solid #000; padding: 5px; word-wrap: break-word; word-break: break-all;}
+#results td:first-child, #results th:first-child, #results td:nth-child(2), #results th:nth-child(2) {word-break: normal;}
+#results td:nth-child(3), #results th:nth-child(3) {max-width: 50%;}
+#results th {font-weight: bold;}
+
+.fail {color: red; font-weight: bold;}

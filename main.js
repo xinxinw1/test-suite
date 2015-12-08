@@ -1,7 +1,7 @@
-/***** Test Suite 1.2.1 *****/
+/***** Test Suite 1.3.0 *****/
 
-/* require tools 4.5.1 */
-/* require ajax 4.5.0 */
+/* require tools 4.10.3 */
+/* require ajax 4.6.0 */
 
 (function (udf){
   var win = window;
@@ -20,7 +20,9 @@
   var map = $.map;
   var rpl = $.rpl;
   
-  var psh = $.psh;
+  var push = $.push;
+  
+  var att = $.att;
   
   var tfn = $.tfn;
   var tfna = $.tfna;
@@ -32,6 +34,13 @@
   
   var evl = $.evl;
   
+  var elm = $.elm;
+  var bot = $.bot;
+  var cont = $.cont;
+  
+  var timer = $.timer;
+  var tim = $.tim;
+  
   var load = $.load;
   var aload = $.aload;
   
@@ -41,40 +50,42 @@
     return a.type;
   }
   
-  // cfn = comparison fn
-  function tseq(run, res, cfn){
+  // run = string to eval
+  // res = result it should be equal to
+  // cfn = comparison fn (default is ===)
+  function mktesteq(run, res, cfn){
     return {type: "testeq", run: run, res: res, cfn: cfn};
   }
   
-  function grun(a){
-    return a.run;
+  // speed test
+  function mktestspd(run, lim){
+    return {type: "testspd", run: run, lim: lim};
   }
   
-  function gres(a){
-    return a.res;
+  // error test
+  function mktesterr(run){
+    return {type: "testerr", run: run};
   }
   
-  function gcfn(a){
-    return a.cfn;
-  }
-  
-  function rs(pass){
-    return {type: "res", pass: pass, mess: apl(stf, sli(arguments, 1))};
-  }
-  
-  function gpass(a){
-    return a.pass;
-  }
-  
-  function gmess(a){
-    return a.mess;
+  // result
+  // rs(false, 234.53, "Failed: $1", a)
+  function rs(pass, time){
+    return {type: "res", pass: pass, time: time, mess: apl(stf, sli(arguments, 2))};
   }
   
   ////// Add Tests //////
   
   var tests = [];
   function test(run, res, cfn){
-    return psh(tseq(run, res, cfn), tests);
+    push(mktesteq(run, res, cfn), tests);
+  }
+  
+  function testspd(run, lim){
+    push(mktestspd(run, lim), tests);
+  }
+  
+  function testerr(run){
+    push(mktesterr(run), tests);
   }
   
   ////// Run Tests //////
@@ -82,66 +93,82 @@
   var allpass = true;
   function runall(){
     allpass = true;
-    out("Running tests...");
-    out("");
     for (var i = 0; i < tests.length; i++){
       var res = run1(tests[i]);
-      if (!gpass(res)){
-        allpass = false;
-        out(gmess(res));
-      }
+      if (!res.pass)allpass = false;
+      outres(res.pass, res.time, tests[i], res.mess);
     }
-    out("");
-    if (allpass)out("Passed all tests!");
-    else out("Failed some tests!");
+    outfin(allpass);
   }
   
   function run1(a){
     var t = typ(a);
+    var tr = timer();
     switch (t){
       case "testeq":
-        var run = grun(a);
-        var cfn = gcfn(a);
-        var corr = gres(a); // correct
+        var run = a.run;
+        var cfn = a.cfn;
+        var corr = a.res; // correct
         try {
           var res = evl(run);
-          if (tfn(corr, cfn)(res))return rs(true);
+          if (tfn(corr, cfn)(res))return rs(true, tr.time());
           if (udfp(cfn)){
-            return rs(false, "Failed: $1 -> $2 != $3", run, res, corr);
+            return rs(false, tr.time(), "-> $1 != $2", res, corr);
           }
-          return rs(false, "Failed: $1 -> $2 != $3 using $4", run, res, corr, cfn);
+          return rs(false, tr.time(), "-> $1 != $2 using $3", res, corr, cfn);
         } catch (e){
-          return rs(false, "Failed: $1 with error $2", run, e);
+          return rs(false, tr.time(), "error $1", e);
+        }
+      case "testspd":
+        var run = a.run;
+        var lim = a.lim;
+        try {
+          var res = evl(run);
+          var tim = tr.time();
+          if (tim <= lim)return rs(true, tim);
+          return rs(false, tim, "speed $1 > $2", res, lim);
+        } catch (e){
+          return rs(false, tim, "error $1", e);
+        }
+      case "testerr":
+        var run = a.run;
+        try {
+          var res = evl(run);
+          return rs(false, tr.time(), "-> $1 which isn't an error", res);
+        } catch (e){
+          return rs(true, tr.time(), "$1", e);
         }
     }
-    return rs(false, "Unknown test type $1", t);
+    return rs(false, tr.time(), "Unknown test type $1", t);
   }
   
   ////// DOM //////
   
   var res = $("results");
-  var pg = $("page");
   
-  var bot = $.bot;
-  var atth = $.atth;
-  
-  function ou(){
-    atth(esc(apl(stf, arguments)), res);
-    bot(pg);
+  function outres(pass, time, test, mess){
+    var teststr = "";
+    switch (typ(test)){
+      case "testeq": teststr = test.run; break;
+      case "testspd": teststr = "Speed <= " + test.lim + ": " + test.run; break;
+      case "testerr": teststr = "Error: " + test.run; break;
+    }
+    att(res, elm("tr", {class: pass?"pass":"fail"},
+               elm("td", pass?"Pass":"Fail"),
+               elm("td", time),
+               elm("td", teststr),
+               elm("td", mess)));
+    bot(document.body);
   }
   
-  function out(){
-    atth(esc(apl(stf, arguments)) + "<br>", res);
-    bot(pg);
-  }
-  
-  function esc(a){
-    return rpl(["<", ">", "\n"],
-               ["&lt", "&gt", "<br>"], a);
+  function outfin(pass){
+    cont($("final"), pass?"Passed all tests!":elm("span", {class: "fail"}, "Failed some tests!"));
+    bot(document.body);
   }
   
   function title(a){
     document.title = a;
+    cont($("title"), a);
   }
   
   ////// Load Files //////
@@ -164,6 +191,8 @@
   }
   
   window.test = test;
+  window.testspd = testspd;
+  window.testerr = testerr;
   window.load = load;
   window.aload = aload2;
   window.udf = udf;
@@ -171,8 +200,7 @@
   window.title = title;
   
   window.onerror = function (msg, url, line){
-    out("Error: " + msg + " at line " + line + " of " + url);
-    out("");
+    outres(false, 0, "", "Error: " + msg + " at line " + line + " of " + url);
     return false;
   }
   
@@ -184,13 +212,9 @@
   ////// Object Exposure //////
   
   win.Test = {
-    tseq: tseq,
-    grun: grun,
-    gres: gres,
-    gcfn: gcfn,
+    mktesteq: mktesteq,
+    mktestspd: mktestspd,
     rs: rs,
-    gpass: gpass,
-    gmess: gmess,
     
     tests: tests,
     test: test,
@@ -198,9 +222,7 @@
     runall: runall,
     run1: run1,
     
-    ou: ou,
-    out: out,
-    esc: esc
+    outres: outres
   };
   
 })();

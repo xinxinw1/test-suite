@@ -1,9 +1,16 @@
 /***** Test Suite Loader *****/
 
-var tsversion = "1.2.1";
+var tsversion = "1.3.0";
 
 window.onload = function (){
-  document.body.innerHTML = "<div id=\"page\"><div id=\"results\"></div></div>";
+  var html = "<div id=\"page\">"
+             + "<h1 id=\"title\"></h1>"
+             + "<table id=\"results\">" 
+               + "<tr><th></th><th>Time</th><th>Test</th><th>Message</th></tr>"
+             + "</table>"
+             + "<p id=\"final\"></p>"
+           + "</div>";
+  document.body.innerHTML += html;
   
   function loadjs(a, f){
     var s = document.createElement("script");
