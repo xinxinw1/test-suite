@@ -1,4 +1,4 @@
-/***** Test Suite 1.3.1 *****/
+/***** Test Suite 1.4.0 *****/
 
 /* require tools 4.10.3 */
 /* require ajax 4.6.0 */
@@ -26,6 +26,7 @@
   
   var tfn = $.tfn;
   var tfna = $.tfna;
+  var is = $.is;
   
   var apl = $.apl;
   var sli = $.sli;
@@ -111,9 +112,12 @@
         var corr = a.res; // correct
         try {
           var res = evl(run);
-          if (tfn(corr, cfn)(res))return rs(true, tr.time());
           if (udfp(cfn)){
+            if (is(res, corr))return rs(true, tr.time());
             return rs(false, tr.time(), "-> $1 != $2", res, corr);
+          }
+          if (tfn(corr, cfn)(res)){
+            return rs(true, tr.time(), "using $1", cfn);
           }
           return rs(false, tr.time(), "-> $1 != $2 using $3", res, corr, cfn);
         } catch (e){
