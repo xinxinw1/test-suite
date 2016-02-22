@@ -1,4 +1,4 @@
-/***** Test Suite 1.4.0 *****/
+/***** Test Suite 1.5.0 *****/
 
 /* require tools 4.10.3 */
 /* require ajax 4.6.0 */
@@ -121,7 +121,7 @@
           }
           return rs(false, tr.time(), "-> $1 != $2 using $3", res, corr, cfn);
         } catch (e){
-          return rs(false, tr.time(), "error $1", e);
+          return rs(false, tr.time(), e.toString());
         }
       case "testspd":
         var run = a.run;
@@ -132,7 +132,7 @@
           if (tim <= lim)return rs(true, tim);
           return rs(false, tim, "speed $1 > $2", res, lim);
         } catch (e){
-          return rs(false, tim, "error $1", e);
+          return rs(false, tim, e.toString());
         }
       case "testerr":
         var run = a.run;
@@ -140,7 +140,7 @@
           var res = evl(run);
           return rs(false, tr.time(), "-> $1 which isn't an error", res);
         } catch (e){
-          return rs(true, tr.time(), "$1", e);
+          return rs(true, tr.time(), e.toString());
         }
     }
     return rs(false, tr.time(), "Unknown test type $1", t);
