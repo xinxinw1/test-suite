@@ -12,3 +12,10 @@
 8. Rename them to `index.html` and `tests.js`
 9. Open `index.html`
 
+## Conversion to QUnit
+
+Replace: `testerr\('([^']*)'` with `assert.throws\(function (){\n    $1;\n  }`
+
+Replace: `(?<!\.)test([a-zA-Z0-9]*)\('([^']*)'` with `assert.test$1\($2`
+
+Replace: `assert.test\(` with `assert.same\(`
